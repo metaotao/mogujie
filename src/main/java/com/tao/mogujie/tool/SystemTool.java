@@ -1,7 +1,6 @@
 package com.tao.mogujie.tool;
 
 public class SystemTool {
-<<<<<<< HEAD
     public static final int SLEEP_TIME = 1500;
     public static final int CONN_TIME_OUT = 3 * 1000;
     public static final String[] USER_AGENTS= {
@@ -15,8 +14,4 @@ public class SystemTool {
     public static final int PAGE_SUM = 100;
     public static final int DEFAULT_MAX_THREAD = 10;
     public static final int RETRY_COUNT = 3;
-=======
-    public static String baseURL="http://www.mogujie.com/";
-    public static int threadNum=20;
->>>>>>> a317ec3e01cc0e0e6a5b3dab5af5752ed3c2592f
 }
