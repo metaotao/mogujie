@@ -1,5 +1,6 @@
 package com.tao.mogujie.util;
 
+<<<<<<< HEAD
 import com.tao.mogujie.model.AllTypesBean;
 import com.tao.mogujie.parser.NetConnection;
 import com.tao.mogujie.tool.SystemTool;
@@ -29,4 +30,11 @@ public class AllTypesUtil {
         }
     }
 
+=======
+import com.tao.mogujie.tool.SystemTool;
+
+public class AllTypesUtil {
+    private String basURL= SystemTool.baseURL;
+    
+>>>>>>> a317ec3e01cc0e0e6a5b3dab5af5752ed3c2592f
 }
