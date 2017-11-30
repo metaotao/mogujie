@@ -23,11 +23,11 @@ public class MogujieTest {
         getJson();;
     }
     //创建httpclient实例
-    public static void main(String[] args) throws ClientProtocolException, IOException{
+    public static void main(String[] args) throws IOException{
         new MogujieTest();
     }
 
-    public String getClothesJson() throws ClientProtocolException, IOException{
+    public String getClothesJson() throws IOException{
         CloseableHttpClient httpClient= HttpClients.createDefault();
         //创建httpGet实例
         HttpGet httpGet=new HttpGet("http://list.mogujie.com/search?sort=pop&fcid=50252&action=clothing&page=1");
@@ -36,7 +36,7 @@ public class MogujieTest {
         HttpEntity httpEntity=closeableHttpResponse.getEntity();//获取返回实体
         String doc=EntityUtils.toString(httpEntity);
 
-        System.out.println(EntityUtils.toString(httpEntity));
+        System.out.println(doc);
         closeableHttpResponse.close();
         httpClient.close();
         return  doc;
@@ -44,16 +44,14 @@ public class MogujieTest {
 
     public void getJson() throws IOException{
         String text=getClothesJson();
-        JSONObject jsonObj= JSON.parseObject(text);
-        JSONArray result=jsonObj.getJSONArray("list");
+        JSONObject jsonObj= (JSONObject) JSON.parseObject(text).get("result");
+        JSONObject resultObj=(JSONObject)jsonObj.get("wall");
+        JSONArray result=resultObj.getJSONArray("list");
         List<LinksBean> linksBeans=JSON.parseArray(result.toJSONString(),LinksBean.class);
         for(LinksBean link:linksBeans){
-            String url=link.getClothURL();
-            String name=link.getClothName();
+            String url=link.getLink();
+            String name=link.getTitle();
             System.out.println(url+"  "+name);
         }
     }
-
-
-
 }

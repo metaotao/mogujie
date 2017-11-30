@@ -1,22 +1,22 @@
 package com.tao.mogujie.model;
 
 public class LinksBean {
-    private String clothURL;
-    private String clothName;
+    private String link;
+    private String title;
 
-    public String getClothURL() {
-        return clothURL;
+    public String getLink() {
+        return link;
     }
 
-    public void setClothURL(String clothURL) {
-        this.clothURL = clothURL;
+    public void setLink(String link) {
+        this.link = link;
     }
 
-    public String getClothName() {
-        return clothName;
+    public String getTitle() {
+        return title;
     }
 
-    public void setClothName(String clothName) {
-        this.clothName = clothName;
+    public void setTitle(String title) {
+        this.title = title;
     }
 }
