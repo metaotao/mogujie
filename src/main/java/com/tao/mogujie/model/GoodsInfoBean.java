@@ -1,15 +1,28 @@
 package com.tao.mogujie.model;
-import java.util.concurrent.ConcurrentHashMap;
 public class GoodsInfoBean {
     private String goodsTitle;
     private String goodsLink;
     private String goodsPrice;
+    //评论数
     private int goodsCommentNum;
+    //销量
     private int  goodsSalesNum;
+    //店铺名
     private String shopName;
+    //
     private String shopDescribe;
     private String shopQuality;
     private String shopService;
+    //收藏数
+    private int connectionNum;
+
+    public int getConnectionNum() {
+        return connectionNum;
+    }
+
+    public void setConnectionNum(int connectionNum) {
+        this.connectionNum = connectionNum;
+    }
 
     public void setGoodsTitle(String goodsTitle) {
         this.goodsTitle = goodsTitle;

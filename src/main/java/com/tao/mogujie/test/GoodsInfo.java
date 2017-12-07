@@ -16,16 +16,20 @@ public class GoodsInfo {
     public void getGoodsInfo(String url){
         Document doc = netConnection.getDocument(url);
         //System.out.println(doc);
-        //商品名称  商品现价
-        Elements elements = doc.select("h1.goods-title,#J_NowPrice,span.num,span.num J_SaleNum");
+        //商品名称  商品现价 商品评价 累积销量  收藏数 店铺名
+        Elements elements = doc.select("h1.goods-title,#J_NowPrice,span.num,span.num J_SaleNum,span.fav-num,div.shop-name fl");
         Element ele1=elements.get(0);
         Element ele2=elements.get(1);
         Element ele3=elements.get(2);
         Element ele4=elements.get(3);
+        Element ele5=elements.get(4);
+        Element ele6=elements.get(5);
         System.out.println(ele1.text());
         System.out.println(ele2.text());
         System.out.println(ele3.text());
         System.out.println(ele4.text());
+        System.out.println(ele5.text());
+        System.out.println(ele6.text());
    //     System.out.println(elements);
         for (Element element : elements) {
          //   System.out.println(element);
