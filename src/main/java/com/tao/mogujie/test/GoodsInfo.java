@@ -2,6 +2,7 @@ package com.tao.mogujie.test;
 
 import com.tao.mogujie.model.GoodsInfoBean;
 import com.tao.mogujie.parser.NetConnection;
+import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
@@ -14,10 +15,24 @@ public class GoodsInfo {
         this.netConnection=netConnection;
     }
     public void getGoodsInfo(String url){
-        Document doc = netConnection.getDocument(url);
+        String pageContent=netConnection.getHtml(url);
+        Document doc= Jsoup.parse(pageContent);
+
+        Elements elements = doc.select("div.type_sections");
+        for (Element element : elements) {
+            Elements elems = element.select("a");
+            for (Element ele : elems) {
+                String pageUrl = ele.attr("href");
+                String title = ele.text();
+
+                System.out.println(pageUrl + title);
+            }
+        }
+      //  System.out.println(elements.get(0).text());
+      //  Document doc = netConnection.getHtml(url);
         //System.out.println(doc);
         //商品名称  商品现价 商品评价 累积销量  收藏数 店铺名
-        Elements elements = doc.select("h1.goods-title,#J_NowPrice,span.num,span.num J_SaleNum,span.fav-num,div.shop-name fl");
+      /*  Elements elements = doc.select("h1.goods-title,#J_NowPrice,span.num,span.num J_SaleNum,span.fav-num,div.shop-name fl");
         Element ele1=elements.get(0);
         Element ele2=elements.get(1);
         Element ele3=elements.get(2);
@@ -40,7 +55,7 @@ public class GoodsInfo {
 
            //     System.out.println(pageUrl + title);
             }
-        }
+        }*/
     }
 
 }

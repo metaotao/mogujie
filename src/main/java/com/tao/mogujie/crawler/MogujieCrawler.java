@@ -21,9 +21,10 @@ public class MogujieCrawler {
     private GoodsInfoBean goodsInfoBean;
     private GoodsInfo goodsInfo;
     String baseURL= SystemTool.baseURL;
-    String goodsURL="http://shop.mogujie.com/detail/1knrbk0?acm=3.ms.1_1_1knrbk0.17.28075-58251.7M5trqCQfy5GT.t_7M5trqCQfy5GT-lc_16-c_2_16_304023317_963243254_1_0-c1_50252_nil_nil_2_963243254_25&cparam=MTUxMjM5MTI0OF8xOXhjdTFtXzBjNzlmNmViYjQxN2Q2MzIyY2JlM2IxMjdiNzhhY2Q2XzE2XzBfMzA0MDIzMzE3XzRjODdfMF8xXzBfNTg0XzFfMF9ycy01MDI1Mi5ydC0wLnd0LTA&ptp=1.L0XuHb.0.0.zeF85ru";
+    String goodsURL="http://list.mogujie.com/book/clothing/50003";
     public MogujieCrawler(){
         netConnection=new NetConnectionImpl();
+       // getAllTypes();
         getGoodsInfo();
     }
     public void getAllTypes(){

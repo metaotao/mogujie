@@ -1,6 +1,12 @@
 package com.tao.mogujie.parser;
 
 import com.tao.mogujie.tool.SystemTool;
+import org.apache.http.HttpEntity;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
@@ -10,32 +16,28 @@ public class NetConnectionImpl implements NetConnection {
     private String[] user_agents = SystemTool.USER_AGENTS;
     private String user_agent;
     private String tmpagent = user_agents[0];
-
-    public Document getDocument(String url){
-        Document doc = null;
+    private CloseableHttpClient httpClient;
+    private HttpGet httpGet;
+    private CloseableHttpResponse closeableHttpResponse;
+    private HttpEntity httpEntity;
+    //http://list.mogujie.com/search?sort=pop&fcid=50252&action=clothing&page=1
+    public String getHtml(String url){
+        String doc=null;
         try {
-            user_agent = tmpagent;
-            doc = Jsoup.connect(url).userAgent(user_agent)
-                    .header("accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8")
-                    .header("scheme", "https")
-                    .header("version", "HTTP/1.1")
-                    .header("accept-encoding", "gzip, deflate, sdch")
-                    .header("accept-language", "zh-CN,zh;q=0.8")
-                    //	.header("cookie", "bid=\"Q5KWZL7y8g7\";")
-                    .header("cache-control", "max-age=0")
-                    .get();
-
+            httpClient= HttpClients.createDefault();
+            //创建httpGet实例
+            httpGet=new HttpGet(url);
+            //执行httpget请求
+            closeableHttpResponse=httpClient.execute(httpGet);
+            httpEntity=closeableHttpResponse.getEntity();//获取返回实体
+            doc=EntityUtils.toString(httpEntity);
         } catch (Exception e) {
             try {
                 Thread.sleep(sleeptime);
             } catch (InterruptedException e1) {
                 // e1.printStackTrace();
             }
-            retryCount--;
-            if (retryCount > 0) {
-                tmpagent = user_agents[retryCount];
-                getDocument(url);
-            }
+
         }
         return doc;
     }

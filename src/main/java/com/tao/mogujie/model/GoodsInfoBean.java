@@ -1,5 +1,7 @@
 package com.tao.mogujie.model;
 public class GoodsInfoBean {
+    private String rid;
+    private String clothes_id;
     private String goodsTitle;
     private String goodsLink;
     private String goodsPrice;
@@ -9,12 +11,28 @@ public class GoodsInfoBean {
     private int  goodsSalesNum;
     //店铺名
     private String shopName;
-    //
+    //店铺描述评分 质量评分 服务评分
     private String shopDescribe;
     private String shopQuality;
     private String shopService;
-    //收藏数
+    //商品收藏数
     private int connectionNum;
+
+    public String getRid() {
+        return rid;
+    }
+
+    public void setRid(String rid) {
+        this.rid = rid;
+    }
+
+    public String getClothes_id() {
+        return clothes_id;
+    }
+
+    public void setClothes_id(String clothes_id) {
+        this.clothes_id = clothes_id;
+    }
 
     public int getConnectionNum() {
         return connectionNum;
