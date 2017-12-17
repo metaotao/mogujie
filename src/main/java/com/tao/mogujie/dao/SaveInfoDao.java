@@ -1,6 +1,5 @@
 package com.tao.mogujie.dao;
 
-import com.tao.mogujie.model.AllTypesBean;
 import com.tao.mogujie.model.AllTypesClothesBean;
 import com.tao.mogujie.model.DBConfig;
 import com.tao.mogujie.model.GoodsInfoBean;
@@ -20,20 +19,6 @@ public class SaveInfoDao {
         dataSource.setUsername(config.getMysqlUserName());
         dataSource.setPassword(config.getMysqlUserPassword());
         dataSource.setDriverClassName("com.mysql.jdbc.Driver");
-    }
-    public void save(AllTypesBean allTypesBean){
-        try{
-            Connection connection=dataSource.getConnection();
-            PreparedStatement preparedStatement=
-                    connection.prepareStatement("insert into "+config.getMysqlMogujieAlltypesTable()+" "+
-                            "values(?,?,?)");
-            preparedStatement.setString(1,allTypesBean.getRid());
-            preparedStatement.setString(2,allTypesBean.getPageURL());
-            preparedStatement.setString(3,allTypesBean.getTypesName());
-            preparedStatement.executeUpdate();
-        }catch (SQLException e){
-            e.printStackTrace();
-        }
     }
     public void save(AllTypesClothesBean allTypesClothesBean){
         try{
@@ -60,7 +45,7 @@ public class SaveInfoDao {
                             "values(?,?,?,?,?,?,?,?,?,?,?,?)");
             preparedStatement.setString(1,goodsInfoBean.getRid());
             preparedStatement.setString(2,goodsInfoBean.getClothes_id());
-            preparedStatement.setString(3,goodsInfoBean.getGoodsLink());
+            preparedStatement.setString(3,goodsInfoBean.getLink());
             preparedStatement.setString(4,goodsInfoBean.getGoodsTitle());
             preparedStatement.setString(5,goodsInfoBean.getGoodsPrice());
             preparedStatement.setInt(6,goodsInfoBean.getGoodsCommentNum());

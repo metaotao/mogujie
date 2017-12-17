@@ -3,12 +3,12 @@ public class GoodsInfoBean {
     private String rid;
     private String clothes_id;
     private String goodsTitle;
-    private String goodsLink;
-    private String goodsPrice;
+    private String link;
+    private String price;
     //评论数
     private int goodsCommentNum;
     //销量
-    private int  goodsSalesNum;
+    private int  sale;
     //店铺名
     private String shopName;
     //店铺描述评分 质量评分 服务评分
@@ -16,7 +16,39 @@ public class GoodsInfoBean {
     private String shopQuality;
     private String shopService;
     //商品收藏数
-    private int connectionNum;
+    private int cfav;
+
+    public int getSale() {
+        return sale;
+    }
+
+    public void setSale(int sale) {
+        this.sale = sale;
+    }
+
+    public int getCfav() {
+        return cfav;
+    }
+
+    public void setCfav(int cfav) {
+        this.cfav = cfav;
+    }
+
+    public String getPrice() {
+        return price;
+    }
+
+    public void setPrice(String price) {
+        this.price = price;
+    }
+
+    public void setLink(String link) {
+        this.link = link;
+    }
+
+    public String getLink() {
+        return link;
+    }
 
     public String getRid() {
         return rid;
@@ -34,13 +66,6 @@ public class GoodsInfoBean {
         this.clothes_id = clothes_id;
     }
 
-    public int getConnectionNum() {
-        return connectionNum;
-    }
-
-    public void setConnectionNum(int connectionNum) {
-        this.connectionNum = connectionNum;
-    }
 
     public void setGoodsTitle(String goodsTitle) {
         this.goodsTitle = goodsTitle;
@@ -49,20 +74,8 @@ public class GoodsInfoBean {
         return goodsTitle;
     }
 
-    public String getGoodsLink() {
-        return goodsLink;
-    }
-
     public int getGoodsCommentNum() {
         return goodsCommentNum;
-    }
-
-    public int getGoodsSalesNum() {
-        return goodsSalesNum;
-    }
-
-    public String getGoodsPrice() {
-        return goodsPrice;
     }
 
     public String getShopDescribe() {
@@ -71,18 +84,6 @@ public class GoodsInfoBean {
 
     public void setGoodsCommentNum(int goodsCommentNum) {
         this.goodsCommentNum = goodsCommentNum;
-    }
-
-    public void setGoodsLink(String goodsLink) {
-        this.goodsLink = goodsLink;
-    }
-
-    public void setGoodsPrice(String goodsPrice) {
-        this.goodsPrice = goodsPrice;
-    }
-
-    public void setGoodsSalesNum(int goodsSalesNum) {
-        this.goodsSalesNum = goodsSalesNum;
     }
 
     public String getShopName() {

@@ -1,5 +1,6 @@
 package com.tao.mogujie.test;
 
+import com.tao.mogujie.model.LinksBean;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
@@ -26,7 +27,7 @@ public class MogujieTest {
     public String getClothesJson() throws IOException{
         CloseableHttpClient httpClient= HttpClients.createDefault();
         //创建httpGet实例
-        HttpGet httpGet=new HttpGet("http://list.mogujie.com/search?sort=pop&fcid=50252&action=clothing&page=1");
+        HttpGet httpGet=new HttpGet("http://list.mogujie.com/search?sort=pop&fcid=10059867&action=clothing&page=1");
         //执行httpget请求
         CloseableHttpResponse closeableHttpResponse=httpClient.execute(httpGet);
         HttpEntity httpEntity=closeableHttpResponse.getEntity();//获取返回实体
@@ -46,8 +47,10 @@ public class MogujieTest {
         List<LinksBean> linksBeans=JSON.parseArray(result.toJSONString(),LinksBean.class);
         for(LinksBean link:linksBeans){
             String url=link.getLink();
+            String s=url.replace("h5","shop")
+                    .replace("detail-normal/index.html?itemId=","detail/").replace("&","?");
             String name=link.getTitle();
-            System.out.println(url+"  "+name);
+            System.out.println(s+"  "+name);
         }
     }
 }

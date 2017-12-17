@@ -1,5 +1,7 @@
 package com.tao.mogujie.model;
 
+import java.util.List;
+
 public class AllTypesClothesBean {
     /**
      * 所有种类下的细类
@@ -8,6 +10,15 @@ public class AllTypesClothesBean {
     private String types_id;
     private String clothesURL;
     private String clothesName;
+    private List<GoodsInfoBean> goodsInfoBeans;
+
+    public List<GoodsInfoBean> getGoodsInfoBeans() {
+        return goodsInfoBeans;
+    }
+
+    public void setGoodsInfoBeans(List<GoodsInfoBean> goodsInfoBeans) {
+        this.goodsInfoBeans = goodsInfoBeans;
+    }
 
     public void setRid(String rid) {
         this.rid = rid;

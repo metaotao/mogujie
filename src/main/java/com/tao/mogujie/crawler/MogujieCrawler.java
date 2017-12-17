@@ -1,12 +1,10 @@
 package com.tao.mogujie.crawler;
 
-import com.tao.mogujie.model.AllTypesBean;
 import com.tao.mogujie.model.GoodsInfoBean;
 import com.tao.mogujie.parser.NetConnection;
 import com.tao.mogujie.parser.NetConnectionImpl;
 import com.tao.mogujie.test.GoodsInfo;
 import com.tao.mogujie.tool.SystemTool;
-import com.tao.mogujie.util.AllTypesUtil;
 
 /**
  * http://h5.mogujie.com/detail-normal/index.html?itemId=1kplzie&acm=3.ms.1_4_1kplzie.17.1308-58251.gWIf2qCQcUaqT.t_gWIf2qCQcUaqT-lc_16  冬季新款大真毛领呢子大衣女韩版外套女收腰羊毛呢夹棉过膝外套女
@@ -20,7 +18,7 @@ public class MogujieCrawler {
     private AllTypesUtil allTypesUtil;
     private GoodsInfoBean goodsInfoBean;
     private GoodsInfo goodsInfo;
-    String baseURL= SystemTool.baseURL;
+    String baseURL= SystemTool.baseURLS[0];
     String goodsURL="http://list.mogujie.com/book/clothing/50003";
     public MogujieCrawler(){
         netConnection=new NetConnectionImpl();
