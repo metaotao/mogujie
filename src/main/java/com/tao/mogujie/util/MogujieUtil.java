@@ -5,7 +5,6 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.tao.mogujie.model.AllTypesClothesBean;
 import com.tao.mogujie.model.GoodsInfoBean;
-import com.tao.mogujie.test.GoodsInfo;
 import com.tao.mogujie.tool.SystemTool;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -31,7 +30,7 @@ public class MogujieUtil {
 
     private int pageSum= SystemTool.PAGE_SUM;
     private int pageSize=SystemTool.PAGE_SIZE;
-    private int pageNum=0;
+    private int pageNum;
     private String clothesForeURL=SystemTool.clothesForeURL;
     private String goodsForeURL=SystemTool.goodsForeURL;
     private CloseableHttpClient closeableHttpClient;
@@ -40,7 +39,8 @@ public class MogujieUtil {
     public MogujieUtil(String baseURL) throws Exception{
         this.baseURL=baseURL;
         this.closeableHttpClient= HttpClients.createDefault();
-        this.pageSize=0;
+        this.pageNum=1;
+       // this.pageSize=0;
         requestConfig=RequestConfig.custom()
                 .setConnectionRequestTimeout(10000)
                 .setConnectTimeout(10000)
@@ -71,7 +71,7 @@ public class MogujieUtil {
             return Optional.empty();
         }
     }
-
+    //获取所有类型下的商品细类
     public List<AllTypesClothesBean> allTypesClothes(){
         HttpGet get=new HttpGet(baseURL);
         get.setConfig(requestConfig);
@@ -87,6 +87,7 @@ public class MogujieUtil {
                             String[] initURL=ele.attr("href").split("[?]");
                             String clothesURL=clothesForeURL+initURL[0];
                             String title=ele.text();
+                            allTypesClothesBean.setRid(allTypesClothesBean.getRid());
                             allTypesClothesBean.setClothesURL(clothesURL);
                             allTypesClothesBean.setClothesName(title);
                             String num=clothesURL.split("/")[5];
@@ -99,71 +100,74 @@ public class MogujieUtil {
         }
     }
 
-    public List<GoodsInfoBean> goodsInfoBeanList(AllTypesClothesBean allTypesClothesBean){
-        MogujieGoodsClient mogujieGoodsClient=new MogujieGoodsClient(allTypesClothesBean);
-        List<GoodsInfoBean> goodsInfoBeans=null;
-        while (mogujieGoodsClient.hasNext()){
-            goodsInfoBeans=mogujieGoodsClient.nextPage();
+    public boolean hasNext(){
+        pageNum+=1;
+        return pageNum<=pageSize;
+    }
+
+    public List<GoodsInfoBean> nextPage(AllTypesClothesBean allTypesClothesBean){
+        HttpGet get=new HttpGet(goodsForeURL+allTypesClothesBean.getClothesURL().split("/")[5]+"&action=clothing&page="+pageNum);
+        get.setConfig(requestConfig);
+        String html=netConnect(get,0).orElseGet(null);
+        if (html!=null){
+            JSONObject jsonObj= (JSONObject) JSON.parseObject(html).get("result");
+            JSONObject resultObj=(JSONObject)jsonObj.get("wall");
+            JSONArray result=resultObj.getJSONArray("list");
+            return JSON.parseArray(result.toJSONString(),GoodsInfoBean.class);
+        //    return linksBeanList;
+        }else{
+            return new ArrayList<>();
         }
-        return goodsInfoBeans;
+    }
+
+    public GoodsInfoBean goodsInfoBeanList(AllTypesClothesBean allTypesClothesBean,GoodsInfoBean goodsInfoBean){
+        MogujieGoodsClient mogujieGoodsClient=new MogujieGoodsClient(allTypesClothesBean,goodsInfoBean);
+        List<GoodsInfoBean> goodsInfoBeans=mogujieGoodsClient.goodsInfos();
+        return goodsInfoBean;
     }
 
     public class MogujieGoodsClient{
-        private int pageNum;
         private List<GoodsInfoBean> goodsInfoBeans;
+        private GoodsInfoBean goodsInfoBean;
         private AllTypesClothesBean allTypesClothesBean;
-        public MogujieGoodsClient(AllTypesClothesBean allTypesClothesBean){
-            this.pageNum=1;
+        public MogujieGoodsClient(AllTypesClothesBean allTypesClothesBean,GoodsInfoBean goodsInfoBean){
+
             this.allTypesClothesBean=allTypesClothesBean;
+            this.goodsInfoBean=goodsInfoBean;
         }
 
-        boolean hasNext(){
-            pageNum+=1;
-            return pageNum<=pageSize;
-        }
-
-        List<GoodsInfoBean> nextPage(){
-            HttpGet get=new HttpGet(goodsForeURL+allTypesClothesBean.getClothesURL().split("/")[5]+"&action=clothing&page="+pageNum);
+        List<GoodsInfoBean> goodsInfos(){
+            HttpGet get=new HttpGet(goodsInfoBean.getLink());
             get.setConfig(requestConfig);
             String html=netConnect(get,0).orElseGet(null);
             if (html!=null){
-                JSONObject jsonObj= (JSONObject) JSON.parseObject(html).get("result");
-                JSONObject resultObj=(JSONObject)jsonObj.get("wall");
-                JSONArray result=resultObj.getJSONArray("list");
-                //获得商品URL 商品现价 商品销量 商品收藏数
-                this.goodsInfoBeans=JSON.parseArray(result.toJSONString(),GoodsInfoBean.class);
-                allTypesClothesBean.setGoodsInfoBeans(goodsInfoBeans);
-                return goodsInfoBeans;
+                Document document= Jsoup.parse(html,goodsInfoBean.getLink());
+                //商品名称  商品现价 商品评价 累积销量 店铺名 店铺描述 质量 服务 收藏数
+                Elements elements=document.select("h1.goods-title,#J_NowPrice,span.num,span.num J_SaleNum,a[title],span.s-cat,span.fav-num");
+                GoodsInfoBean goodsInfo=new GoodsInfoBean();
+                goodsInfoBeans.forEach(goodsInfoBean->{
+                    goodsInfoBean=new GoodsInfoBean();
+                    goodsInfoBean.setRid(goodsInfoBean.getRid());
+                    goodsInfoBean.setClothes_id(allTypesClothesBean.getRid());
+                    goodsInfoBean.setGoodsTitle(elements.get(0).text());
+                    goodsInfoBean.setPrice(elements.get(1).text());
+                    int goodsCommentNum=Integer.parseInt(elements.get(2).text());
+                    goodsInfoBean.setGoodsCommentNum(goodsCommentNum);
+                    int salesNum=Integer.parseInt(elements.get(3).text());
+                    goodsInfoBean.setSale(salesNum);
+                    goodsInfoBean.setShopName(elements.get(4).text());
+                    goodsInfoBean.setShopDescribe(elements.get(5).text());
+                    goodsInfoBean.setShopQuality(elements.get(6).text());
+                    goodsInfoBean.setShopService(elements.get(7).text());
+                    int favNum=Integer.parseInt(elements.get(8).text());
+                    goodsInfoBean.setCfav(favNum);
+                });
+              //  allTypesClothesBean.setGoodsInfoBeans(goodsInfoBeans);
+                return this.goodsInfoBeans;
             }else{
                 return new ArrayList<>();
             }
         }
-
-        GoodsInfoBean getGoodsInfo(String goodsURL){
-            GoodsInfoBean goodsInfoBean=new GoodsInfoBean();
-            HttpGet get=new HttpGet(goodsURL);
-            get.setConfig(requestConfig);
-            String html=netConnect(get,0).orElseGet(null);
-
-            if (html!=null){
-                Document document= Jsoup.parse(html,baseURL);
-                //商品名称  商品评价数 店铺名
-                Elements elements = document.select("h1.goods-title,span.num,div.shop-name fl");
-                goodsInfoBean.setGoodsTitle(elements.get(0).text());
-                int goodsCommentNum=Integer.parseInt(elements.get(1).text());
-                goodsInfoBean.setGoodsCommentNum(goodsCommentNum);
-                goodsInfoBean.setShopName(elements.get(2).text());
-                this.goodsInfoBeans.add(goodsInfoBean);
-            }
-            return goodsInfoBean;
-        }
-
-    }
-    public static void main(String[] args) throws Exception{
-        MogujieUtil mogujieUtil=new MogujieUtil(SystemTool.baseURLS[0]);
-      //  List<AllTypesBean> list=mogujieUtil.initPage();
-        mogujieUtil.allTypesClothes();
-
     }
 
 }

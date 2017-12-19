@@ -25,9 +25,9 @@ public class SaveInfoDao {
             Connection connection=dataSource.getConnection();
             PreparedStatement preparedStatement=
                     connection.prepareStatement("insert into "+config.getMysqlMogujieAlltypesclothesTable()+" "+
-                            "values(?,?,?,?)");
+                            "values(?,?,?)");
             preparedStatement.setString(1,allTypesClothesBean.getRid());
-            preparedStatement.setString(2,allTypesClothesBean.getTypes_id());
+
             preparedStatement.setString(3,allTypesClothesBean.getClothesURL());
             preparedStatement.setString(4,allTypesClothesBean.getClothesName());
             preparedStatement.executeUpdate();
@@ -47,14 +47,14 @@ public class SaveInfoDao {
             preparedStatement.setString(2,goodsInfoBean.getClothes_id());
             preparedStatement.setString(3,goodsInfoBean.getLink());
             preparedStatement.setString(4,goodsInfoBean.getGoodsTitle());
-            preparedStatement.setString(5,goodsInfoBean.getGoodsPrice());
+            preparedStatement.setString(5,goodsInfoBean.getPrice());
             preparedStatement.setInt(6,goodsInfoBean.getGoodsCommentNum());
-            preparedStatement.setInt(7,goodsInfoBean.getGoodsSalesNum());
+            preparedStatement.setInt(7,goodsInfoBean.getSale());
             preparedStatement.setString(8,goodsInfoBean.getShopName());
             preparedStatement.setString(9,goodsInfoBean.getShopDescribe());
             preparedStatement.setString(10,goodsInfoBean.getShopQuality());
             preparedStatement.setString(11,goodsInfoBean.getShopService());
-            preparedStatement.setInt(12,goodsInfoBean.getConnectionNum());
+            preparedStatement.setInt(12,goodsInfoBean.getCfav());
             preparedStatement.executeUpdate();
 
         }catch (SQLException e){

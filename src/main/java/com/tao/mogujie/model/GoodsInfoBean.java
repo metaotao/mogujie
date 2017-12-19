@@ -1,4 +1,5 @@
 package com.tao.mogujie.model;
+import org.apache.commons.codec.digest.DigestUtils;
 public class GoodsInfoBean {
     private String rid;
     private String clothes_id;
@@ -51,7 +52,7 @@ public class GoodsInfoBean {
     }
 
     public String getRid() {
-        return rid;
+        return DigestUtils.md5Hex(link+goodsTitle+shopName);
     }
 
     public void setRid(String rid) {

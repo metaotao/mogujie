@@ -1,5 +1,9 @@
 package com.tao.mogujie.tool;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 public class SystemTool {
     public static final int SLEEP_TIME = 1500;
     public static final int CONN_TIME_OUT = 3 * 1000;
@@ -8,9 +12,10 @@ public class SystemTool {
             "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2486.0 Safari/537.36 Edge/13.10586",
             "User-Agent:Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.75 Safari/537.36 LBBROWSER" };
     //起始URL
-    public static String[] baseURLS={"http://list.mogujie.com/book/clothing","http://list.mogujie.com/book/skirt",
-                                        "http://list.mogujie.com/book/trousers","http://list.mogujie.com/book/shoes",
-                                        "http://list.mogujie.com/book/magic"};
+
+    public static List<String> baseURLS= Arrays.asList("http://list.mogujie.com/book/clothing","http://list.mogujie.com/book/skirt",
+            "http://list.mogujie.com/book/trousers","http://list.mogujie.com/book/shoes",
+            "http://list.mogujie.com/book/magic");
 
     //所有细类链接相同前半部分
     public static String clothesForeURL="http://list.mogujie.com";

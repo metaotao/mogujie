@@ -1,5 +1,7 @@
 package com.tao.mogujie.model;
 
+import org.apache.commons.codec.digest.DigestUtils;
+
 import java.util.List;
 
 public class AllTypesClothesBean {
@@ -7,7 +9,6 @@ public class AllTypesClothesBean {
      * 所有种类下的细类
      */
     private String rid;
-    private String types_id;
     private String clothesURL;
     private String clothesName;
     private List<GoodsInfoBean> goodsInfoBeans;
@@ -25,7 +26,7 @@ public class AllTypesClothesBean {
     }
 
     public String getRid() {
-        return rid;
+        return DigestUtils.md5Hex(clothesURL+clothesName);
     }
 
     public String getClothesName() {
@@ -36,10 +37,6 @@ public class AllTypesClothesBean {
         return clothesURL;
     }
 
-    public String getTypes_id() {
-        return types_id;
-    }
-
     public void setClothesName(String clothesName) {
         this.clothesName = clothesName;
     }
@@ -48,7 +45,4 @@ public class AllTypesClothesBean {
         this.clothesURL = clothesURL;
     }
 
-    public void setTypes_id(String types_id) {
-        this.types_id = types_id;
-    }
 }
