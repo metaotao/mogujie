@@ -91,7 +91,7 @@ public class MogujieUtil {
                             allTypesClothesBean.setClothesURL(clothesURL);
                             allTypesClothesBean.setClothesName(title);
                             String num=clothesURL.split("/")[5];
-                            System.out.println(clothesURL+","+title+","+num);
+                            System.out.println("all clothes:"+clothesURL+","+title+","+num);
                         }
                         return allTypesClothesBean;
                     }).collect(Collectors.toList());
@@ -108,6 +108,7 @@ public class MogujieUtil {
     public List<GoodsInfoBean> nextPage(AllTypesClothesBean allTypesClothesBean){
         HttpGet get=new HttpGet(goodsForeURL+allTypesClothesBean.getClothesURL().split("/")[5]+"&action=clothing&page="+pageNum);
         get.setConfig(requestConfig);
+        System.out.println("nextpage:"+goodsForeURL+allTypesClothesBean.getClothesURL().split("/")[5]+"&action=clothing&page="+pageNum);
         String html=netConnect(get,0).orElseGet(null);
         if (html!=null){
             JSONObject jsonObj= (JSONObject) JSON.parseObject(html).get("result");
@@ -149,6 +150,8 @@ public class MogujieUtil {
                     goodsInfoBean=new GoodsInfoBean();
                     goodsInfoBean.setRid(goodsInfoBean.getRid());
                     goodsInfoBean.setClothes_id(allTypesClothesBean.getRid());
+                    goodsInfoBean.setLink(goodsInfoBean.getLink());
+                    System.out.println(goodsInfoBean.getLink()+elements.get(0).text());
                     goodsInfoBean.setGoodsTitle(elements.get(0).text());
                     goodsInfoBean.setPrice(elements.get(1).text());
                     int goodsCommentNum=Integer.parseInt(elements.get(2).text());

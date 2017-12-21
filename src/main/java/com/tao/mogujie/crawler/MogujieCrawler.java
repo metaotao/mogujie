@@ -15,9 +15,6 @@ public class MogujieCrawler {
     private MogujieUtil mogujieUtil;
     private SaveInfoDao saveInfoDao;
     private DBConfig dbConfig;
-    public MogujieCrawler(){
-
-    }
 
     public void run() throws Exception{
         dbConfig=new DBConfig("conf/mogujie.conf");
@@ -42,7 +39,7 @@ public class MogujieCrawler {
         return baseURLs.remove(0);
     }
 
-    public static void main(String[] args){
-        new MogujieCrawler();
+    public static void main(String[] args) throws Exception{
+        new MogujieCrawler().run();
     }
 }

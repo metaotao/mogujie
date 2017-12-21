@@ -28,8 +28,8 @@ public class SaveInfoDao {
                             "values(?,?,?)");
             preparedStatement.setString(1,allTypesClothesBean.getRid());
 
-            preparedStatement.setString(3,allTypesClothesBean.getClothesURL());
-            preparedStatement.setString(4,allTypesClothesBean.getClothesName());
+            preparedStatement.setString(2,allTypesClothesBean.getClothesURL());
+            preparedStatement.setString(3,allTypesClothesBean.getClothesName());
             preparedStatement.executeUpdate();
 
 
